@@ -1,63 +1,76 @@
-// Copyright 2021 NNTU-CS
-int countPairs1(int *arr, int len, int value) {
-  int res = 0;
-  for (int i = 0; i < (len - 1); i++) {
-    for (int j = i + 1; j < len; j++) {
-      if (arr[i] + arr[j] == value) {
-        res++;
-      }
-    }
-  }
-  return res;
-  return 0;
+int countPairs1(int* arr, int len, int value) {
+int count = 0;
+int halfValue = value / 2;
+for (int i = 0; arr[i] <= halfValue; i++) {
+int secondPart = value - arr[i];
+for (int j = i + 1; arr[j] <= secondPart; j++) {
+if (arr[i] + arr[j] == value) {
+count++;
 }
-int countPairs2(int *arr, int len, int value) {
-  int res = 0;
-  int to_left = len-1;
-  int to_right = 0;
-  while (arr[to_left] > value) {
-    to_left--;
-  }
-  for (to_right; to_right < to_left; to_right++) {
-    for (int i = to_right + 1; to_left+1 > i; i++) {
-      if (arr[to_right] + arr[i] == value) {
-        res++;
-      }
-    }
-  }
-  return res;
-  return 0;
 }
-int countPairs3(int *arr, int len, int value) {
-  int res = 0, left = 0, right = len - 1;
-  int mid = 0;
-  int count = 0;
-  while (left < right - 1) {
-    mid = (left + right) / 2;
-    if (arr[mid] < value) {
-      right = mid;
-    } else {
-      left = mid;
-    }
-  }
-  len = right - 1;
-  for (int i = 0; i < len; i++) {
-    left = i + 1, right = len - 1;
-    count = 0;
-    while (left < right) {
-      mid = (left + right) / 2;
-      if (arr[mid] < (value - arr[i])) {
-        left = mid + 1;
-      } else {
-        right = mid;
-      }
-    }
-    while (arr[left] == (value - arr[i])) {
-      count++;
-      left++;
-    }
-    res += count;
-  }
-  return res;
-  return 0;
+}
+return count;
+}
+
+int countPairs2(int* arr, int len, int value) {
+int count = 0;
+int left = 0;
+int right = len;
+int maxPart{};
+while (left < right) {
+maxPart = (left + right) / 2;
+if (arr[maxPart] > value) {
+right = maxPart;
+} else {
+left = maxPart + 1;
+}
+}
+int halfValue = value / 2;
+int i = 0;
+for (i; arr[i] < halfValue; i++) {
+int secondPart = value - arr[i];
+for (int j = maxPart; arr[j] >= secondPart; j--) {
+if (arr[i] + arr[j] == value) {
+count++;
+}
+}
+}
+for (int j = 1; arr[i + 1] == halfValue; i++, j++) {
+count += j;
+}
+return count;
+}
+
+int countPairs3(int* arr, int len, int value) {
+int count = 0;
+int i = 0;
+int tempValue = value / 2;
+int left = 0;
+int right = len;
+int mid{};
+while (left < right) {
+mid = (left + right) / 2;
+if (arr[mid] > value) {
+right = mid;
+} else {
+left = mid + 1;
+}
+}
+for (i; arr[i] <= tempValue; i++) {
+int left = i + 1;
+int tempValue2 = value - arr[i];
+while (left < right) {
+int mid = (left + right) / 2;
+if (arr[mid] < tempValue2) {
+left = mid + 1;
+} else {
+right = mid;
+}
+}
+while (arr[left] == tempValue2) {
+count++;
+left++;
+}
+}
+return count;
 }
