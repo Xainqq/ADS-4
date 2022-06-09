@@ -1,75 +1,52 @@
 // Copyright 2021 NNTU-CS
 int countPairs1(int* arr, int len, int value) {
   int count = 0;
-
-  for (int i = 0; i < len-1; i++) {
-    for (int j = i + 1; j < len; j++) {
-      if (arr[i] + arr[j] == value) {
+  for (int v = 0; v < len - 1; v++) {
+    for (int c = v + 1; c < len; c++) {
+      if (arr[c] + arr[v] == value)
         count++;
+    }
+  }
+  return count;
+}
+int countPairs2(int *arr, int len, int value) {
+  int count = 0;
+  for (int v = 0; v < len - 1; v++) {
+    if (arr[v] <= value) {
+      for (int c = len - 1; c > v; c--) {
+        if (arr[v] + arr[c] == value)
+          count++;
       }
     }
   }
-return count;
-return 0;
+  return count;
 }
-
-int countPairs2(int* arr, int len, int value) {
+int countPairs3(int *arr, int len, int value) {
   int count = 0;
-
-  for (int i = 0; i < len-1; i++) {
-    if(arr[i] > value) {
-      break;
-    }
-    for (int j = len-1; j > i; j--) {
-      if (arr[j] > value) {
-        continue;
-      }
-      if (arr[i] + arr[j] == value) {
+  for (int v = 0; v < len - 1; a++) {
+    int left = v;
+    int right = len;
+    while (left < right - 1) {
+      int m = (left + right) / 2;
+      if (arr[v] + arr[m] == value) {
         count++;
-      }
-    }
-  }
-return count;
-return 0;
-}
-
-int countPairs3(int* arr, int len, int value) {
-  int count = 0;
-  int right = len - 1;
-  int left = 0;
-  int index = 0;
-  int mid;
-
-  for (int i = 0; i < len - 1; i++) {
-    int prim = 0;
-    left = i + 1;
-    mid = (left + right) / 2;
-    while (left <= right) {
-      if (arr[mid] + arr[i] == value) {
-        count++;
-        prim = 1;
+        int c = m + 1;
+        while (arr[v] + arr[c] == value && c < right) {
+          count++;
+          c++;
+        }
+        c = m - 1;
+        while (arr[v] + arr[c] == value && c > left) {
+          count++;
+          c--;
+        }
         break;
       }
-      if (arr[mid] + arr[i] > value) {
-        right = mid - 1;
-      }
-      else {
-        left = mid + 1;      
-        mid = (left + right) / 2;
-           }
-      if (prim) {
-        int middle = mid;
-        index = mid;
-        while (arr[index + 1] + arr[i] == value) {
-          count++;
-          index++;
-        }
-        while (arr[middle - 1] + arr[i] == value && middle - 1 != i) {
-          count++;
-          middle--;
-        }
-      }
+      if (arr[v] + arr[m] > value)
+        right = m;
+      else
+        left = m;
     }
-    return count;
   }
+  return count;
 }
